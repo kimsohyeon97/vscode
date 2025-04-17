@@ -168,7 +168,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="no"><a id="detail" href="#">10121211341</a></td>
+                                    <td class="no"><a class="detail" href="#">10121211341</a></td>
                                     <td>abc123</td>
                                     <td>김유신</td>
                                     <td>맥북</td>
@@ -177,10 +177,10 @@
                                     <td>신용카드</td>
                                     <td>결제카드</td>
                                     <td>0000-00-00 00:00:00</td>
-                                    <td class="delivery"><a href="#" id="delivery">배송하기</a> </td>
+                                    <td><a href="#" class="delivery">배송하기</a> </td>
                                 </tr>
                                 <tr>
-                                    <td class="no"><a id="detail">10121211341</a></td>
+                                    <td class="no"><a href="#" class="detail">10121211341</a></td>
                                     <td>abc123</td>
                                     <td>김유신</td>
                                     <td>맥북</td>
@@ -189,7 +189,7 @@
                                     <td>신용카드</td>
                                     <td>결제카드</td>
                                     <td>0000-00-00 00:00:00</td>
-                                    <td class="delivery"><a id="delivery">배송하기</a> </td>
+                                    <td><a href="#" class="delivery">배송하기</a> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -275,7 +275,7 @@
 
 
     <!-- 모달 -->
-    <!-- 배너 등록 모달 -->
+    <!-- 주문상세 모달 -->
     <div class="modal">
         <div class="modal_popup">
             <div class="modal_head">
@@ -312,30 +312,166 @@
                             <td>68,400</td>
                         </tr>
                     </tbody>
-
                 </table>
 
-                
+                <div class="total_div">
+                    <span>총 상품금액</span> 
+                    <span class="rs">107,000원</span><br>
+
+                    <span>총 할인금액</span> 
+                    <span class="rs">-7,100원</span><br>
+
+                    <span>배송비</span> 
+                    <span class="rs">3,100원</span><br>
+
+                    <span>총 결제금액</span> 
+                    <span class="rs"><span style="color: red;">102,900</span>원</span><br>
+                </div>
+
+                <!-- 결제 정보 -->
+                <p class="modal_title_black" style="margin-top: 110px;">결제정보</p>
+                <table class="info">
+                    <tr>
+                        <td>주문번호</td>
+                        <td>10121211341</td>
+                    </tr>
+                    <tr>
+                        <td>결제방법</td>
+                        <td>신용카드 / 1234 **** **** 4432</td>
+                    </tr>
+                    <tr>
+                        <td>주문자 / 연락처</td>
+                        <td>김유신 / 010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>결제상태</td>
+                        <td style="color: #36B04B;">
+                            결제완료 <span class="rs">총 결제 금액 <span style="color: red;">102,900</span>원</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <p class="modal_title_black" style="margin-top: 50px;">배송정보</p>
+                <table class="info">
+                    <tr>
+                        <td>수취인</td>
+                        <td>김유신</td>
+                    </tr>
+                    <tr>
+                        <td>연락처</td>
+                        <td>010-1234-1234</td>
+                    </tr>
+                    <tr>
+                        <td>배송지 주소</td>
+                        <td>부산 부산진구 123-11 10 층</td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 
     <script>
         const modal = document.querySelector('.modal');
-        const modalOpen = document.querySelector('#detail');
+        const modalOpenBtns = document.querySelectorAll('.detail');
         const modalClose = document.querySelector('.close_btn');
 
         //열기 버튼을 눌렀을 때 모달팝업이 열림
-        modalOpen.addEventListener('click',function(){
-            //'on' class 추가
-            modal.classList.add('on');
+        modalOpenBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // 링크 클릭 방지
+                modal.classList.add('on');
+            });
         });
+
         //닫기 버튼을 눌렀을 때 모달팝업이 닫힘
         modalClose.addEventListener('click',function(){
             //'on' class 제거
             modal.classList.remove('on');
         });
+
+
+
     </script>
+
+
+    <!-- 배송 모달 -->
+    <div class="modal" id="delivery">
+        <div class="modal_popup">
+            <div class="modal_head">
+                <span class="modal_title">주문상세</span><span class="modal_title_id">10121211341</span>
+                <button type="button" class="close_btn" id="close_btn2">X</button>
+            </div>
+
+            <div class="modal_main">
+                <form action="">
+
+
+                    <table class="delivery_modal_table">
+                        <tr>
+                            <td>주문번호</td>
+                            <td><input type="text" class="dipt2" placeholder="10121211341"></td>
+                        </tr>
+                        <tr>
+                            <td>수령인</td>
+                            <td><input type="text" class="dipt1" placeholder="홍길동"></td>
+                        </tr>
+                        <tr>
+                            <td>우편번호</td>
+                            <td><input type="text" class="dipt1" placeholder="12345"></td>
+                        </tr>
+                        <tr>
+                            <td>기본주소</td>
+                            <td><input type="text" class="dipt3" placeholder="부산광역시부산진구부전동 123" ></td>
+                        </tr>
+                        <tr>
+                            <td>상세주소</td>
+                            <td><input type="text" class="dipt3" placeholder="OO 빌딩 3층 301호"></td>
+                        </tr>
+                        <tr>
+                            <td>택배사</td>
+                            <td>
+                                <select name="delivery">
+                                    <option value="택배사선택">택배사선택</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>운송장번호</td>
+                            <td><input type="text" class="dipt3" placeholder="발급받은택배사송장번호입력"></td>
+                        </tr>
+                        <tr>
+                            <td>기타</td>
+                            <td><textarea name="content" placeholder="기타정보입력"></textarea></td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="modal_btn">수정하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const modalDelivery = document.querySelector('#delivery');
+        const modalDelOpenBtns = document.querySelectorAll('.delivery');
+        const modalClose2 = document.querySelector('#close_btn2');
+    
+        // 열기 버튼을 눌렀을 때 배송 모달 열기
+        modalDelOpenBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault(); // 링크 클릭 방지
+                modalDelivery.classList.add('on');
+            });
+        });
+    
+        //닫기 버튼을 눌렀을 때 모달팝업이 닫힘
+        modalClose2.addEventListener('click',function(){
+            //'on' class 제거
+            modalDelivery.classList.remove('on');
+        });
+
+
+    </script>
+        
 
 
 </body>

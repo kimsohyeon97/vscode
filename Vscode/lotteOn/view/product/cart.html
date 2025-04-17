@@ -11,137 +11,143 @@
 <body>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-      
-          const parents = document.querySelectorAll(".category .parent");
-              
-          parents.forEach(parent => {
-              parent.style.cursor = "pointer";
-      
-              parent.addEventListener("click", () => {
-              const currentChildren = parent.nextElementSibling;
-      
-              document.querySelectorAll(".category .children").forEach(children => {
-                  if (children !== currentChildren) {
-                  children.style.display = "none";
-                  }
-              });
-      
-              if (currentChildren && currentChildren.classList.contains("children")) {
-                  const isVisible = currentChildren.style.display === "block";
-                  currentChildren.style.display = isVisible ? "none" : "block";
-              }
-              });
-          });
-      
-          const plusBtns = document.querySelectorAll('.btn-plus');
-          const minusBtns = document.querySelectorAll('.btn-minus');
-          const checkAll = document.querySelector('#check-all');
-          const itemCheckboxes = document.querySelectorAll('.cart_content input[type="checkbox"]');
-      
-          function updateSummary() {
-            let totalCount = 0;
-            let originalTotalAmount = 0;
-            let discountTotal = 0;
-            let actualPayAmount = 0;
-            const uniqueVendors = new Set();
-      
-            const deliveryFeePerVendor = 2500;
-            const freeShippingLimit = 1000000;
-      
-            itemCheckboxes.forEach((cb) => {
-              if (cb.checked) {
-                const cartContent = cb.closest('.cart_content');
-                const quantity = parseInt(cartContent.querySelector('.quantity').textContent);
-      
+            const parents = document.querySelectorAll(".category .parent");
+
+            parents.forEach(parent => {
+                parent.style.cursor = "pointer";
+                parent.addEventListener("click", () => {
+                const currentChildren = parent.nextElementSibling;
+
+                document.querySelectorAll(".category .children").forEach(children => {
+                    if (children !== currentChildren) {
+                    children.style.display = "none";
+                    }
+                });
+
+                if (currentChildren && currentChildren.classList.contains("children")) {
+                    const isVisible = currentChildren.style.display === "block";
+                    currentChildren.style.display = isVisible ? "none" : "block";
+                }
+                });
+            });
+
+            const plusBtns = document.querySelectorAll('.btn-plus');
+            const minusBtns = document.querySelectorAll('.btn-minus');
+            const checkAll = document.querySelector('#check-all');
+            const itemCheckboxes = document.querySelectorAll('.cart_content input[type="checkbox"]');
+
+            function updateSummary() {
+                let totalCount = 0;
+                let originalTotalAmount = 0;
+                let discountTotal = 0;
+                let actualPayAmount = 0;
+                const uniqueVendors = new Set();
+
+                const deliveryFeePerVendor = 2500;
+                const freeShippingLimit = 1000000;
+
+                itemCheckboxes.forEach((cb) => {
+                if (cb.checked) {
+                    const cartContent = cb.closest('.cart_content');
+                    const quantity = parseInt(cartContent.querySelector('.quantity').textContent);
+
+                    const priceOriginalEl = cartContent.querySelector('.price_original');
+                    const priceTotalEl = cartContent.querySelector('.price_total');
+
+                    const unitOriginal = parseInt(priceOriginalEl.dataset.unit);
+                    const unitTotal = parseInt(priceTotalEl.dataset.unit);
+
+                    const itemDiscount = (unitOriginal - unitTotal) * quantity;
+                    const itemOriginalPrice = unitOriginal * quantity;
+                    const itemTotalPrice = unitTotal * quantity;
+
+                    const vendorNameEl = cartContent.querySelector('.vendor-name');
+                    if (vendorNameEl) {
+                    uniqueVendors.add(vendorNameEl.textContent.trim());
+                    }
+
+                    totalCount += quantity;
+                    originalTotalAmount += itemOriginalPrice;
+                    discountTotal += itemDiscount;
+                    actualPayAmount += itemTotalPrice;
+                }
+                });
+
+                const orderAmount = originalTotalAmount - discountTotal;
+                const shippingCost = (totalCount > 0 && orderAmount < freeShippingLimit) ? uniqueVendors.size * deliveryFeePerVendor : 0;
+                const finalTotal = orderAmount + shippingCost;
+
+                const shippingText =
+                totalCount === 0 ? '0'
+                    : orderAmount >= freeShippingLimit ? '무료'
+                    : shippingCost.toLocaleString() + '원';
+
+                const point = Math.floor(orderAmount * 0.01);
+
+                document.getElementById('summary-count').textContent = totalCount;
+                document.getElementById('summary-amount').textContent = originalTotalAmount.toLocaleString();
+                document.getElementById('summary-discount').textContent = '-' + discountTotal.toLocaleString();
+                document.getElementById('summary-shipping').textContent = shippingText;
+                document.getElementById('summary-point').textContent = point.toLocaleString();
+                document.getElementById('summary-total').textContent = finalTotal.toLocaleString() + '원';
+            }
+
+            plusBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                const cartContent = btn.closest('.cart_content');
+                const quantityEl = cartContent.querySelector('.quantity');
+                let count = parseInt(quantityEl.textContent);
+                count++;
+                quantityEl.textContent = count;
+
                 const priceOriginalEl = cartContent.querySelector('.price_original');
                 const priceTotalEl = cartContent.querySelector('.price_total');
-      
                 const unitOriginal = parseInt(priceOriginalEl.dataset.unit);
                 const unitTotal = parseInt(priceTotalEl.dataset.unit);
-      
-                const itemDiscount = (unitOriginal - unitTotal) * quantity;
-                const itemOriginalPrice = unitOriginal * quantity;
-                const itemTotalPrice = unitTotal * quantity;
-      
-                const vendorNameEl = cartContent.querySelector('.vendor-name');
-                if (vendorNameEl) {
-                  uniqueVendors.add(vendorNameEl.textContent.trim());
-                }
-      
-                totalCount += quantity;
-                originalTotalAmount += itemOriginalPrice;
-                discountTotal += itemDiscount;
-                actualPayAmount += itemTotalPrice;
-              }
-            });
-      
-            const orderAmount = originalTotalAmount - discountTotal;
-            const shippingCost = (totalCount > 0 && orderAmount < freeShippingLimit) ? uniqueVendors.size * deliveryFeePerVendor : 0;
-            const finalTotal = orderAmount + shippingCost;
-      
-            const shippingText =
-              totalCount === 0 ? '0'
-              : orderAmount >= freeShippingLimit ? '무료'
-              : shippingCost.toLocaleString() + '원';
-      
-            const point = Math.floor(orderAmount * 0.01);
-      
-            document.getElementById('summary-count').textContent = totalCount;
-            document.getElementById('summary-amount').textContent = originalTotalAmount.toLocaleString();
-            document.getElementById('summary-discount').textContent = '-' + discountTotal.toLocaleString();
-            document.getElementById('summary-shipping').textContent = shippingText;
-            document.getElementById('summary-point').textContent = point.toLocaleString();
-            document.getElementById('summary-total').textContent = finalTotal.toLocaleString() + '원';
-          }
-      
-          plusBtns.forEach((btn) => {
-            btn.addEventListener('click', () => {
-              const cartContent = btn.closest('.cart_content');
-              const quantityEl = cartContent.querySelector('.quantity');
-              let count = parseInt(quantityEl.textContent);
-              count++;
-              quantityEl.textContent = count;
-      
-              const priceTotalEl = cartContent.querySelector('.price_total');
-              const unitTotal = parseInt(priceTotalEl.dataset.unit);
-              const newTotal = unitTotal * count;
-      
-              priceTotalEl.textContent = newTotal.toLocaleString() + '원';
-              updateSummary();
-            });
-          });
-      
-          minusBtns.forEach((btn) => {
-            btn.addEventListener('click', () => {
-              const cartContent = btn.closest('.cart_content');
-              const quantityEl = cartContent.querySelector('.quantity');
-              let count = parseInt(quantityEl.textContent);
-              if (count > 1) {
-                count--;
-                quantityEl.textContent = count;
-      
-                const priceTotalEl = cartContent.querySelector('.price_total');
-                const unitTotal = parseInt(priceTotalEl.dataset.unit);
-                const newTotal = unitTotal * count;
-      
-                priceTotalEl.textContent = newTotal.toLocaleString() + '원';
+
+                // 💡 수량 반영하여 원가, 총가 동시 업데이트
+                priceOriginalEl.textContent = (unitOriginal * count).toLocaleString() + '원';
+                priceTotalEl.textContent = (unitTotal * count).toLocaleString() + '원';
+
                 updateSummary();
-              }
+                });
             });
-          });
-      
-          itemCheckboxes.forEach(cb => cb.addEventListener('change', updateSummary));
-      
-          checkAll.addEventListener('change', function () {
-            const isChecked = this.checked;
-            itemCheckboxes.forEach(cb => cb.checked = isChecked);
+
+            minusBtns.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                const cartContent = btn.closest('.cart_content');
+                const quantityEl = cartContent.querySelector('.quantity');
+                let count = parseInt(quantityEl.textContent);
+                if (count > 1) {
+                    count--;
+                    quantityEl.textContent = count;
+
+                    const priceOriginalEl = cartContent.querySelector('.price_original');
+                    const priceTotalEl = cartContent.querySelector('.price_total');
+                    const unitOriginal = parseInt(priceOriginalEl.dataset.unit);
+                    const unitTotal = parseInt(priceTotalEl.dataset.unit);
+
+                    // 💡 수량 반영하여 원가, 총가 동시 업데이트
+                    priceOriginalEl.textContent = (unitOriginal * count).toLocaleString() + '원';
+                    priceTotalEl.textContent = (unitTotal * count).toLocaleString() + '원';
+
+                    updateSummary();
+                }
+                });
+            });
+
+            itemCheckboxes.forEach(cb => cb.addEventListener('change', updateSummary));
+
+            checkAll.addEventListener('change', function () {
+                const isChecked = this.checked;
+                itemCheckboxes.forEach(cb => cb.checked = isChecked);
+                updateSummary();
+            });
+
+            itemCheckboxes.forEach(cb => cb.checked = false);
             updateSummary();
-          });
-      
-          itemCheckboxes.forEach(cb => cb.checked = false);
-          updateSummary();
-        });
-      
+            });
+
       
       </script>
       

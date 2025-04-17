@@ -172,7 +172,8 @@ aside {
     color: #333;
 }
 
-.price_origin {
+.price_origin,
+.price_original {
     color: #aaa;
     text-decoration: line-through;
 }
@@ -185,7 +186,7 @@ aside {
     margin-left: 200px;
     width: 1000px;
     height: auto;
-    border: 1px solid black;
+    margin-bottom: 100px;
 }
 
 .order > h1 {
@@ -195,29 +196,12 @@ aside {
     margin: 40px 0;
 }
 
-.order_header {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.order_header > button {
-    width: 70px;
-    height: 30px;
-    margin-left: 850px;
-    border: 1px solid #999;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
 .order_content {
     width: 999px;
     height: auto;
     border: 1px solid #eee;
-    box-sizing: border-box;
-    margin-top: 10px;
     margin-bottom: 30px;
     border-collapse: collapse;
-    border-top: 1px solid #999;
 }
 
 .order_content td,
@@ -227,6 +211,7 @@ aside {
     border-bottom: 1px solid #eee;
     padding: 5px;
 }
+
 
 .order_content img {
     width: 100px;
@@ -240,7 +225,7 @@ aside {
     color: #fff;
     text-align: center;
     line-height: 20px;
-    margin-left: 100px;
+    margin-left: 130px;
     margin-bottom: -15px;
 }
 
@@ -251,10 +236,10 @@ aside {
 
 .cart_summary {
     width: 350px;
-    height: 400px;
-    margin-top: 20px;
+    height: 450px;
     border: 1px solid #eee;
     padding: 10px;
+    margin-left: 130px;
 }
 
 .cart_summary > p {
@@ -277,6 +262,10 @@ aside {
     font-size: 14px;
 }
 
+.order_content td p {
+    font-size: 14px;
+}
+
 .cart_summary table th {
     color: #666;
     text-align: left; 
@@ -294,8 +283,6 @@ aside {
 .total > td {
     border-top: 1px solid #eee;
     color: #ef2a23;
-    font-size: 20px;
-    font-weight: 700;
 }
 
 .cart_summary table button {
@@ -307,3 +294,143 @@ aside {
     color: #fff;
     font-size: 20px;
 }
+
+.vendor-section {
+    margin-bottom: 30px;
+}
+
+.vendor-header {
+    background-color: #f8f8f8;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.vendor-title {
+    font-size: inherit; 
+}
+
+.vendor-toggle-icon {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+.vendor-group .order_content {
+    display: none;
+}
+
+.vendor-group .order_content:first-of-type {
+    display: table;
+}
+
+.order_info {
+    display: flex;
+}
+
+.order_info > div > p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.order_info > div:nth-child(1) > table {
+    width: 500px;
+}
+
+.order_info > div:nth-child(1) > table  button {
+    margin-left: 5px;
+    width: 60px;
+    height: 32px;
+    border: none;
+    border-radius: 5px;
+    background-color: #a8a5a5;
+    font-size: 14px;
+    color: #fff;
+}
+
+.order_info > div:nth-child(1) > table td,
+.order_info > div:nth-child(1) > table th {
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    padding: 5px;
+}
+
+.order_info > div:nth-child(1) > table input {
+    width: 200px;
+    height: 30px;
+}
+
+.order_info table tr:nth-child(4) input,
+.order_info table tr:nth-child(5) input,
+.order_info table tr:nth-child(6) textarea {
+    width: 350px;
+}
+
+.discount_info {
+    width: 100%;
+    height: auto;
+}
+
+.discount_info > div {
+    font-size: 14px;
+}
+
+.discount_info > div > p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.discount_info button {
+    margin-left: 5px;
+    width: 60px;
+    height: 24px;
+    border: none;
+    border-radius: 5px;
+    background-color:  #a8a5a5;
+    font-size: 14px;
+    color: #fff;
+}
+
+.discount_info > div > input,
+.discount_info > div > select {
+    margin-left: 10px;
+    width: 120px;
+    font-size: 14px;
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 12px 24px;
+    padding: 5px 0;
+  }
+  
+  .payment-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+  }
+  
+  .kakaopay-label {
+    background: #ffeb00;
+    color: #000;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+
+
+
+
