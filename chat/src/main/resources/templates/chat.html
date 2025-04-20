@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅</title>
+</head>
+<body>
+<h3>사용자: <span th:text="${userName}">익명</span></h3>
+<h4>채팅방: <span th:text="${roomId}">room</span></h4>
+
+<input id="msg" placeholder="메시지 입력" />
+<button onclick="sendMsg()">보내기</button>
+<ul id="chat"></ul>
+
+<script th:inline="javascript">
+    const roomId = /*[[${roomId}]]*/ "room123";
+    const userName = /*[[${userName}]]*/ "익명";
+
+    const socket = new WebSocket("ws://localhost:8081/ws/chat?roomId=" + roomId + "&userName=" + encodeURIComponent(userName));
+
+    socket.onopen = () => {
+        console.log("WebSocket 연결됨");
+    };
+
+    socket.onerror = (e) => {
+        console.error("WebSocket 에러 발생", e);
+    };
+
+    socket.onclose = () => {
+        console.warn("WebSocket 연결 종료됨");
+    };
+
+    socket.onmessage = (e) => {
+        const li = document.createElement("li");
+        li.textContent = e.data;
+        document.getElementById("chat").appendChild(li);
+    };
+
+    function sendMsg() {
+        if (socket.readyState !== WebSocket.OPEN) {
+            alert("WebSocket 연결이 아직 완료되지 않았습니다.");
+            return;
+        }
+
+        const msg = document.getElementById("msg").value;
+        socket.send(JSON.stringify({
+            roomId: roomId,
+            sender: userName,
+            message: msg
+        }));
+        document.getElementById("msg").value = "";
+    }
+</script>
+</body>
+</html>
