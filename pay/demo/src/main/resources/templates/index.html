@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 수단 선택</title>
+
+    <script>
+        // 폼 제출 시 처리되는 함수
+        function handlePayment() {
+            // 결제 방법이 선택되지 않았다면 경고 메시지 출력
+            const selectedPaymentMethod = document.querySelector('input[name="payMethod"]:checked');
+            if (!selectedPaymentMethod) {
+                alert("결제 수단을 선택해 주세요.");
+                return;
+            }
+
+            const payMethod = selectedPaymentMethod.value;
+
+            // 카카오페이가 선택된 경우에만 POST 요청을 보냄
+            if (payMethod === 'kakao') {
+                // 카카오페이 결제 준비 API 호출
+                const ADMIN_KEY = '308ec753fd2c007c3368d735e6deca2f';
+
+                fetch('/payment/ready', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `KakaoAK ${ADMIN_KEY}`,
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+                    },
+                    body: new URLSearchParams({
+                        cid: "TC0ONETIME",
+                        partner_order_id: "12345",
+                        partner_user_id: "sohyeon123",
+                        item_name: "상품 A",
+                        quantity: "1",                   // 수량
+                        total: "1000",                   // 총 결제 금액
+                        tax_free: "0",                   // 비과세 금액
+                        tax: "100",                     // 부가세 금액
+                        //point: "0",                      // 사용한 포인트
+                        //discount: "1000",                // 할인 금액
+                        //green_deposit: "0"               // 컵 보증금
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('결제 준비 API 응답:', data);  // 응답 전체 확인
+                        if (data.next_redirect_pc_url) {
+                            console.log('리다이렉트 URL:', data.next_redirect_pc_url);
+                            window.location.href = data.next_redirect_pc_url;
+                        } else {
+                            alert('결제 준비 응답에 리다이렉트 URL이 없습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('결제 준비 중 오류:', error);
+                        alert('결제 준비 중 오류가 발생했습니다.');
+                    });
+
+            } else {
+                // 다른 결제 수단을 선택한 경우에는 폼을 그대로 제출
+                document.getElementById('paymentForm').submit();
+            }
+        }
+    </script>
+
+
+</head>
+<body>
+<h2>결제 수단을 선택하세요</h2>
+
+<form id="paymentForm" onsubmit="handlePayment(); return false;">
+    <label>
+        <input type="radio" name="payMethod" value="naver"> 네이버페이
+    </label><br>
+
+    <label>
+        <input type="radio" name="payMethod" value="kakao"> 카카오페이
+    </label><br>
+
+    <label>
+        <input type="radio" name="payMethod" value="toss"> 토스페이
+    </label><br><br>
+
+    <button type="submit">결제하기</button>
+</form>
+</body>
+</html>
